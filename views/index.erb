@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> Welcome to Twitter</title>
+</head>
+<body>
+	<h1> TWITTER </h1>
+	<h2>
+<%= Twitter_user.get(user_id).name %>
+	</h2>
+<a href="/signout" > Sign Out </a>
+
+<form action="/tweet" method="POST">
+<input type="text" name="tweet" />
+<br>
+<input type="submit" value="Tweet">
+</form>
+
+<ul>
+<% tweets.each do |twee| %>
+<%= twee.tweet %><br>
+<%= twee.likes %><br>
+<%= Twitter_user.get(twee.user_id).nickname %>
+<% end %>
+</ul>
+</body>
+</html>
