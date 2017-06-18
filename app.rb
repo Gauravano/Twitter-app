@@ -99,4 +99,8 @@ post '/signin' do
 			return redirect '/'
 		end
 
+		get '/signout' do
+			session[:p] = nil
+			return redirect '/'
+		end
 		
