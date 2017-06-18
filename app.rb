@@ -27,11 +27,13 @@ class Twitter_user
 	enable :sessions
 
 	get '/' do
-		if session[p].nil?
+		if session[:p].nil?
 			return redirect '/signin'
-	end
+		end
+
+	users = Twitter_user.all
 	tweets = Tweets.all
-	erb :index, locals: {user_id: session[:p] , tweets: tweets}
+	erb :index, locals: {user_id: session[:p] , tweets: tweets,user: users}
 end
 
 get '/signin' do
@@ -44,9 +46,9 @@ post '/signin' do
 
 	user = Twitter_user.all(email: email).first
 
-	if email == "" || password == ""
+	if email == nil || password == nil
 		return redirect '/signin'
-	else if user.nil?
+	elsif user.nil?
 		return redirect '/signup'
 	else
 		if user.password == password
@@ -56,6 +58,9 @@ post '/signin' do
 			return redirect '/signin'
 		end
 	end
+	redirect '/signin'
+end
+
 
 	get '/signup' do
 		erb :signup
@@ -65,19 +70,21 @@ post '/signin' do
 
 		email = params["email"]
 		password = params["password"]
+		name = params["name"]
+		nickname = params["nickname"]
 
-		if user !=nil || email == "" || password == ""
+		user = Twitter_user.all(email: email).first
+
+		if user !=nil || email == nil || password == nil
 			return redirect '/signup'
-
 		else
-			user = Twitter_user.all(email: email).first
 
 			if user
 				return redirect '/signup'
 			else
 				user = Twitter_user.new
 				user.email = email
-				user.name = params[name]
+				user.name = name
 				user.password = password
 				user.nickname = nickname
 				user.save
@@ -85,6 +92,7 @@ post '/signin' do
 				return redirect '/'
 			end
 		end
+	end
 
 		post '/tweet' do
 			tweet = params["tweet"]
@@ -103,4 +111,4 @@ post '/signin' do
 			session[:p] = nil
 			return redirect '/'
 		end
-		
+
