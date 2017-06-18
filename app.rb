@@ -86,4 +86,17 @@ post '/signin' do
 			end
 		end
 
+		post '/tweet' do
+			tweet = params["tweet"]
+			tweet_inf = Tweets.new
+			tweet_inf.tweet = tweet
+			tweet_inf.user_id = session[:p]
+
+			if tweet_inf.tweet != "" 
+				tweet_inf.save
+			end
+
+			return redirect '/'
+		end
+
 		
