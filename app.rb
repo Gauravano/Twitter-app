@@ -44,7 +44,7 @@ post '/signin' do
 
 	user = Twitter_user.all(email: email).first
 
-	if email == "" && password == ""
+	if email == "" || password == ""
 		return redirect '/signin'
 	else if user.nil?
 		return redirect '/signup'
@@ -61,4 +61,29 @@ post '/signin' do
 		erb :signup
 	end
 
-	
+	post '/signup' do
+
+		email = params["email"]
+		password = params["password"]
+
+		if user !=nil || email == "" || password == ""
+			return redirect '/signup'
+
+		else
+			user = Twitter_user.all(email: email).first
+
+			if user
+				return redirect '/signup'
+			else
+				user = Twitter_user.new
+				user.email = email
+				user.name = params[name]
+				user.password = password
+				user.nickname = nickname
+				user.save
+				session[:p] = user.id
+				return redirect '/'
+			end
+		end
+
+		
