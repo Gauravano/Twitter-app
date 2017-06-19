@@ -7,6 +7,7 @@
 	<h1> TWITTER </h1>
 	<h2>
 <%= Twitter_user.get(user_id).name %>
+<%= h = Twitter_user.get(user_id).email %>
 	</h2>
 <a href="/signout" > Sign Out </a>
 
@@ -15,10 +16,15 @@
 <br>
 <input type="submit" value="Tweet" />
 </form>
-
 <ul>
 <% tweets.each do |twee| %>
 <%= twee.tweet %><br>
+<form action = "/like" method = "POST">
+	<input type="hidden" name="email" >
+	<% input type="hidden" name="twee.tweet" %>  
+<input type="submit" value = "Like">
+</form>
+
 <%= twee.likes %>
 <%= Twitter_user.get(twee.user_id).nickname %><br>
 <% end %>

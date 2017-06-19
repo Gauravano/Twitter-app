@@ -25,8 +25,8 @@ class Twitter_user
 		include DataMapper::Resource
 
 			property :tweet, 	Text
-			property :user_name,String
-			property : isitlike,Boolean
+			property :email,	String
+	#		property :isitlike,Boolean
 
 		end
 
@@ -70,7 +70,6 @@ post '/signin' do
 	redirect '/signin'
 end
 
-
 	get '/signup' do
 		erb :signup
 	end
@@ -104,11 +103,29 @@ end
 	end
 
 	post '/like' do
+		user_mail = params["email"]
+		tweet = params["twee.tweet"]
 
+	p =	Liker.all(email: user_mail)
+
+	if p.!nil?
+		p.each do |k|
+			if k.tweet == tweet
+				return redirect '/index'
+			end
+		end
+			like = Liker.new
+			like.email = user_mail
+			like.tweet = tweet
+			like.save
+			m = Tweets.get(user_mail)
+			m.likes = m.likes + 1
+			m.save
+			return redirect '/index'
+		end
 	end
 
-
-	post '/tweet' do
+		post '/tweet' do
 			tweet = params["tweet"]
 			tweet_inf = Tweets.new
 			tweet_inf.tweet = tweet
