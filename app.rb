@@ -15,11 +15,20 @@ class Twitter_user
 	class Tweets
 		include DataMapper::Resource
 
-		property :tweet,	String
+		property :tweet,	Text
 		property :user_id,	Numeric
 		property :likes,	Numeric
 		property :id,		Serial
 	end
+
+	class Liker
+		include DataMapper::Resource
+
+			property :tweet, 	Text
+			property :user_name,String
+			property : isitlike,Boolean
+
+		end
 
 	DataMapper.finalize
 	DataMapper.auto_upgrade!
@@ -94,7 +103,12 @@ end
 		end
 	end
 
-		post '/tweet' do
+	post '/like' do
+
+	end
+
+
+	post '/tweet' do
 			tweet = params["tweet"]
 			tweet_inf = Tweets.new
 			tweet_inf.tweet = tweet
